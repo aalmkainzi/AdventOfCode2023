@@ -130,7 +130,6 @@ int digit_name_to_int(const char *str, int n)
         case seven: return 7;
         case eight: return 8;
         case nine:  return 9;
+        default:    return -1;
     }
-    
-    return -1;
 }
