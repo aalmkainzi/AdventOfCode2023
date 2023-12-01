@@ -36,22 +36,22 @@ int main(int argc, char *argv[])
         
         for(int j = 0 ; f == 0 ; j++)
         {
-            int left_digit_name_as_int;
+            char left_digit_name_as_num;
             
             if(isdigit(line[j]))
                 f = line[j] - '0';
-            else if((left_digit_name_as_int = digit_name_to_num(line + j, linelen - j)) != 0)
-                f = left_digit_name_as_int;
+            else if((left_digit_name_as_num = digit_name_to_num(line + j, linelen - j)) != 0)
+                f = left_digit_name_as_num;
         }
         
         for(int j = linelen - 1 ; l == 0 ; j--)
         {
-            int right_digit_name_as_int;
+            char right_digit_name_as_num;
             
             if(isdigit(line[j]))
                 l = line[j] - '0';
-            else if((right_digit_name_as_int = digit_name_to_num(line + j, linelen - j)) != 0)
-                l = right_digit_name_as_int;
+            else if((right_digit_name_as_num = digit_name_to_num(line + j, linelen - j)) != 0)
+                l = right_digit_name_as_num;
         }
         
         sum += (f * 10) + l;
@@ -80,6 +80,10 @@ char digit_name_to_num(const char *str, int n)
     else if(digit_str[0] == 'e' || (digit_str[0] == 's' && digit_str[1] == 'e') || (digit_str[0] == 't' && digit_str[1] == 'h'))
     {
         memset(digit_str + 5, 0, 8 - 5);
+    }
+    else
+    {
+        return 0;
     }
     
     uint64_t as_u64 = *(uint64_t*)&digit_str;
