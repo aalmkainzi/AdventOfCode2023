@@ -7,7 +7,7 @@
 
 #define min(a, b) (a < b ? a : b)
 
-int digit_name_to_char(const char *str, int n);
+char digit_name_to_char(const char *str, int n);
 
 int main(int argc, char *argv[])
 {
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
                 
                 if(isdigit(lines[i][j]))
                     f = lines[i][j];
-                else if((left_digit_name_as_char = digit_name_to_char(lines[i] + j, linelen - j)) != -1)
+                else if((left_digit_name_as_char = digit_name_to_char(lines[i] + j, linelen - j)) != 0)
                     f = left_digit_name_as_char;
             }
             if(!l)
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
                 
                 if(isdigit(lines[i][k]))
                     l = lines[i][k];
-                else if((right_digit_name_as_char = digit_name_to_char(lines[i] + k, linelen - k)) != -1)
+                else if((right_digit_name_as_char = digit_name_to_char(lines[i] + k, linelen - k)) != 0)
                     l = right_digit_name_as_char;
             }
         }
@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
 }
 
 // since no digit name has more than 8 chars, it can be fully represented by a long
-int digit_name_to_char(const char *str, int n)
+char digit_name_to_char(const char *str, int n)
 {
     char digit_str[8] = { 0 };
     memcpy(digit_str, str, min(n, 8));
@@ -166,5 +166,5 @@ int digit_name_to_char(const char *str, int n)
         case nine:  return '9';
     }
     
-    return -1;
+    return 0;
 }
