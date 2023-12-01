@@ -52,26 +52,25 @@ int main(int argc, char *argv[])
     {
         long linelen = strlen(lines[i]);
         char f = 0, l = 0;
-        for(int j = 0, k = linelen - 1 ; f == 0 || l == 0 ; j++, k--)
+        
+        for(int j = 0 ; f == 0 ; j++)
         {
-            if(!f)
-            {
-                int left_digit_name_as_int;
-                
-                if(isdigit(lines[i][j]))
-                    f = lines[i][j] - '0';
-                else if((left_digit_name_as_int = digit_name_to_int(lines[i] + j, linelen - j)) != -1)
-                    f = left_digit_name_as_int;
-            }
-            if(!l)
-            {
-                int right_digit_name_as_int;
-                
-                if(isdigit(lines[i][k]))
-                    l = lines[i][k] - '0';
-                else if((right_digit_name_as_int = digit_name_to_int(lines[i] + k, linelen - k)) != -1)
-                    l = right_digit_name_as_int;
-            }
+            int left_digit_name_as_int;
+            
+            if(isdigit(lines[i][j]))
+                f = lines[i][j] - '0';
+            else if((left_digit_name_as_int = digit_name_to_int(lines[i] + j, linelen - j)) != -1)
+                f = left_digit_name_as_int;
+        }
+        
+        for(int j = linelen - 1 ; l == 0 ; j--)
+        {
+            int right_digit_name_as_int;
+            
+            if(isdigit(lines[i][j]))
+                l = lines[i][j] - '0';
+            else if((right_digit_name_as_int = digit_name_to_int(lines[i] + j, linelen - j)) != -1)
+                l = right_digit_name_as_int;
         }
         
         sum += (f * 10) + l;
