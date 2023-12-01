@@ -3,8 +3,6 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdint.h>
-#define STB_DS_IMPLEMENTATION
-#include "stb_ds.h"
 
 #define min(a, b) (a < b ? a : b)
 
