@@ -4,9 +4,7 @@
 #include <ctype.h>
 #include <stdint.h>
 
-#define min(a, b) (a < b ? a : b)
-
-char digit_name_to_num(const char *str, int n);
+char digit_name_to_num(const char *str);
 
 int main(int argc, char *argv[])
 {
@@ -40,7 +38,7 @@ int main(int argc, char *argv[])
             
             if(isdigit(line[j]))
                 f = line[j] - '0';
-            else if((left_digit_name_as_num = digit_name_to_num(line + j, linelen - j)) != 0)
+            else if((left_digit_name_as_num = digit_name_to_num(line + j)) != 0)
                 f = left_digit_name_as_num;
         }
         
@@ -50,7 +48,7 @@ int main(int argc, char *argv[])
             
             if(isdigit(line[j]))
                 l = line[j] - '0';
-            else if((right_digit_name_as_num = digit_name_to_num(line + j, linelen - j)) != 0)
+            else if((right_digit_name_as_num = digit_name_to_num(line + j)) != 0)
                 l = right_digit_name_as_num;
         }
         
@@ -62,53 +60,38 @@ int main(int argc, char *argv[])
     fclose(file);
 }
 
-// since no digit name has more than 8 chars, it can be fully represented by a uint64_t
-char digit_name_to_num(const char *str, int n)
-{
-    char digit_str[8] = { 0 };
-    memcpy(digit_str, str, min(n, 8));
+#define PATTERN_(A,B,C,D,E,...) ( \
+    ((uint64_t)(A)) |       \
+    ((uint64_t)(B) << 8)  | \
+    ((uint64_t)(C) << 16) | \
+    ((uint64_t)(D) << 24) | \
+    ((uint64_t)(E) << 32))
+
+#define PATTERN(...) PATTERN_(__VA_ARGS__,0,0)
+
+char digit_name_to_num(const char *c) {
+    uint64_t u64 = *(uint64_t*)c;
     
-    // zero out the digit_str after the digit name
-    if(digit_str[0] == 'o' || (digit_str[0] == 't' && digit_str[1] == 'w') || (digit_str[0] == 's' && digit_str[1] == 'i'))
+    switch(u64 & 0xFFFFFFFFFF)
     {
-        memset(digit_str + 3, 0, 8 - 3);
-    }
-    else if(digit_str[0] == 'f' || digit_str[0] == 'n')
-    {
-        memset(digit_str + 4, 0, 8 - 4);
-    }
-    else if(digit_str[0] == 'e' || (digit_str[0] == 's' && digit_str[1] == 'e') || (digit_str[0] == 't' && digit_str[1] == 'h'))
-    {
-        memset(digit_str + 5, 0, 8 - 5);
-    }
-    else
-    {
-        return 0;
+        case PATTERN('t','h','r','e','e'): return 3;
+        case PATTERN('s','e','v','e','n'): return 7;
+        case PATTERN('e','i','g','h','t'): return 8;
     }
     
-    uint64_t as_u64 = *(uint64_t*)&digit_str;
-    
-    constexpr uint64_t one   = 6647407;
-    constexpr uint64_t two   = 7305076;
-    constexpr uint64_t three = 435493693556;
-    constexpr uint64_t four  = 1920298854;
-    constexpr uint64_t five  = 1702259046;
-    constexpr uint64_t six   = 7891315;
-    constexpr uint64_t seven = 474148660595;
-    constexpr uint64_t eight = 499967813989;
-    constexpr uint64_t nine  = 1701734766;
-    
-    switch(as_u64)
+    switch(u64 & 0xFFFFFFFF)
     {
-        case one:   return 1;
-        case two:   return 2;
-        case three: return 3;
-        case four:  return 4;
-        case five:  return 5;
-        case six:   return 6;
-        case seven: return 7;
-        case eight: return 8;
-        case nine:  return 9;
-        default:    return 0;
+        case PATTERN('f','o','u','r'): return 4;
+        case PATTERN('f','i','v','e'): return 5;
+        case PATTERN('n','i','n','e'): return 9;
     }
+    
+    switch(u64 & 0xFFFFFF)
+    {
+        case PATTERN('o','n','e'): return 1;
+        case PATTERN('t','w','o'): return 2;
+        case PATTERN('s','i','x'): return 6;
+    }
+    
+    return 0;
 }
