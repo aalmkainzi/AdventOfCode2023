@@ -26,41 +26,23 @@ int main(int argc, char *argv[])
         exit(1);
     }
     
-    char **lines = NULL;
-    arrput(lines, NULL);
+    int sum = 0;
+    char line[128] = { 0 };
     
-    int i = 0;
     while(!feof(file))
     {
-        int c = fgetc(file);
-        if(c == '\n' || c == EOF)
-        {
-            arrput(lines[i], '\0');
-            arrput(lines, NULL);
-            i++;
-        }
-        else
-        {
-            arrput(lines[i], c);
-        }
-    }
-    
-    const long nb_lines = i;
-    
-    int sum = 0;
-    
-    for(int i = 0 ; i < nb_lines ; i++)
-    {
-        long linelen = strlen(lines[i]);
+        fgets(line, sizeof(line), file);
+        long linelen = strlen(line);
+        
         char f = 0, l = 0;
         
         for(int j = 0 ; f == 0 ; j++)
         {
             int left_digit_name_as_int;
             
-            if(isdigit(lines[i][j]))
-                f = lines[i][j] - '0';
-            else if((left_digit_name_as_int = digit_name_to_int(lines[i] + j, linelen - j)) != -1)
+            if(isdigit(line[j]))
+                f = line[j] - '0';
+            else if((left_digit_name_as_int = digit_name_to_int(line + j, linelen - j)) != -1)
                 f = left_digit_name_as_int;
         }
         
@@ -68,9 +50,9 @@ int main(int argc, char *argv[])
         {
             int right_digit_name_as_int;
             
-            if(isdigit(lines[i][j]))
-                l = lines[i][j] - '0';
-            else if((right_digit_name_as_int = digit_name_to_int(lines[i] + j, linelen - j)) != -1)
+            if(isdigit(line[j]))
+                l = line[j] - '0';
+            else if((right_digit_name_as_int = digit_name_to_int(line + j, linelen - j)) != -1)
                 l = right_digit_name_as_int;
         }
         
@@ -78,13 +60,6 @@ int main(int argc, char *argv[])
     }
     
     printf("%d\n", sum);
-    
-    for(int i = 0 ; i < arrlen(lines) ; i++)
-    {
-        arrfree(lines[i]);
-    }
-    
-    arrfree(lines);
 }
 
 // since no digit name has more than 8 chars, it can be fully represented by a uint64_t
@@ -107,7 +82,7 @@ int digit_name_to_int(const char *str, int n)
         memset(digit_str + 5, 0, 8 - 5);
     }
     
-    uint64_t as_uint64_t = *(uint64_t*)&digit_str;
+    uint64_t as_u64 = *(uint64_t*)&digit_str;
     
     constexpr uint64_t one   = 6647407;
     constexpr uint64_t two   = 7305076;
@@ -119,7 +94,7 @@ int digit_name_to_int(const char *str, int n)
     constexpr uint64_t eight = 499967813989;
     constexpr uint64_t nine  = 1701734766;
     
-    switch(as_uint64_t)
+    switch(as_u64)
     {
         case one:   return 1;
         case two:   return 2;
