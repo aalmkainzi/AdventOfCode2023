@@ -7,11 +7,101 @@
 
 #define min(a, b) (a < b ? a : b)
 
-int letter_to_num(const char *str, int n)
+int digit_name_to_char(const char *str, int n);
+
+int main(int argc, char *argv[])
+{
+    if(argc < 2)
+    {
+        fprintf(stderr, "no file given\n");
+        exit(1);
+    }
+    
+    FILE *file = fopen(argv[1], "r");
+    
+    if(file == NULL)
+    {
+        fprintf(stderr, "file doesn't exist\n");
+        exit(1);
+    }
+    
+    char **lines = NULL;
+    arrput(lines, NULL);
+    
+    int i = 0;
+    while(!feof(file))
+    {
+        int c = fgetc(file);
+        if(c == '\n' || c == EOF)
+        {
+            arrput(lines[i], '\0');
+            arrput(lines, NULL);
+            i++;
+        }
+        else
+        {
+            arrput(lines[i], c);
+        }
+    }
+    
+    const long nb_lines = i;
+    
+    char (*results)[3] = calloc(nb_lines, sizeof(char[3]));
+    
+    for(int i = 0 ; i < nb_lines ; i++)
+    {
+        long linelen = strlen(lines[i]);
+        char f = 0, l = 0;
+        for(int j = 0, k = linelen - 1 ; f == 0 || l == 0 ; j++, k--)
+        {
+            if(!f)
+            {
+                int left_letter_as_num = digit_name_to_char(lines[i] + j, linelen - j);
+                
+                if(isdigit(lines[i][j]))
+                    f = lines[i][j];
+                else if(left_letter_as_num != -1)
+                    f = left_letter_as_num;
+            }
+            if(!l)
+            {
+                int right_letter_as_num = digit_name_to_char(lines[i] + k, linelen - k);
+                
+                if(isdigit(lines[i][k]))
+                    l = lines[i][k];
+                else if(right_letter_as_num != -1)
+                    l = right_letter_as_num;
+            }
+        }
+        
+        results[i][0] = f;
+        results[i][1] = l;
+    }
+    
+    int sum = 0;
+    for(int i = 0 ; i < nb_lines ; i++)
+    {
+        sum += atoi(results[i]);
+    }
+    
+    printf("%d\n", sum);
+    
+    for(int i = 0 ; i < arrlen(lines) ; i++)
+    {
+        arrfree(lines[i]);
+    }
+    
+    arrfree(lines);
+    free(results);
+}
+
+// since no digit name has more than 8 chars, it can be fully represented by a long
+int digit_name_to_char(const char *str, int n)
 {
     char digit_str[8] = { 0 };
     memcpy(digit_str, str, min(n, 8));
     
+    // zero out the digit_str after the digit name
     if(digit_str[0] == 'o')
     {
         memset(digit_str + 3, 0, 8 - 3);
@@ -29,14 +119,7 @@ int letter_to_num(const char *str, int n)
     }
     else if(digit_str[0] == 'f')
     {
-        if(digit_str[1] == 'o')
-        {
-            memset(digit_str + 4, 0, 8 - 4);
-        }
-        else if(digit_str[1] == 'i')
-        {
-            memset(digit_str + 4, 0, 8 - 4);
-        }
+        memset(digit_str + 4, 0, 8 - 4);
     }
     else if(digit_str[0] == 's')
     {
@@ -84,78 +167,4 @@ int letter_to_num(const char *str, int n)
     }
     
     return -1;
-}
-
-int main()
-{
-    FILE *file = fopen("day1_input.txt", "r");
-    
-    char **lines = NULL;
-    arrput(lines, NULL);
-    
-    int i = 0;
-    while(!feof(file))
-    {
-        int c = fgetc(file);
-        if(c == '\n')
-        {
-            arrput(lines[i], '\0');
-            arrput(lines, NULL);
-            i++;
-        }
-        else
-        {
-            arrput(lines[i], c);
-        }
-    }
-    
-    arrput(lines[i], '\0');
-    
-    long nb_lines = i;
-    
-    char (*results)[3] = calloc(nb_lines, sizeof(char[3]));
-    
-    for(int i = 0 ; i < nb_lines ; i++)
-    {
-        long linelen = strlen(lines[i]);
-        char f = 0, l = 0;
-        for(int j = 0, k = linelen - 1 ; f == 0 || l == 0 ; j++, k--)
-        {
-            int left_letter_as_num = letter_to_num(lines[i] + j, linelen - j);
-            int right_letter_as_num = letter_to_num(lines[i] + k, linelen - k);
-            if(!f)
-            {
-                if(isdigit(lines[i][j]))
-                    f = lines[i][j];
-                else if(left_letter_as_num != -1)
-                    f = left_letter_as_num;
-            }
-            if(!l)
-            {
-                if(isdigit(lines[i][k]))
-                    l = lines[i][k];
-                else if(right_letter_as_num != -1)
-                    l = right_letter_as_num;
-            }
-        }
-        
-        results[i][0] = f;
-        results[i][1] = l;
-    }
-    
-    int sum = 0;
-    for(int i = 0 ; i < nb_lines ; i++)
-    {
-        sum += atoi(results[i]);
-    }
-    
-    printf("%d\n", sum);
-    
-    for(int i = 0 ; i < arrlen(lines) ; i++)
-    {
-        arrfree(lines[i]);
-    }
-    
-    arrfree(lines);
-    free(results);
 }
