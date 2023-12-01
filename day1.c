@@ -94,43 +94,17 @@ int digit_name_to_int(const char *str, int n)
     memcpy(digit_str, str, min(n, 8));
     
     // zero out the digit_str after the digit name
-    if(digit_str[0] == 'o')
+    if(digit_str[0] == 'o' || (digit_str[0] == 't' && digit_str[1] == 'w') || (digit_str[0] == 's' && digit_str[1] == 'i'))
     {
         memset(digit_str + 3, 0, 8 - 3);
     }
-    else if(digit_str[0] == 't')
-    {
-        if(digit_str[1] == 'w')
-        {
-            memset(digit_str + 3, 0, 8 - 3);
-        }
-        else if(digit_str[1] == 'h')
-        {
-            memset(digit_str + 5, 0, 8 - 5);
-        }
-    }
-    else if(digit_str[0] == 'f')
+    else if(digit_str[0] == 'f' || digit_str[0] == 'n')
     {
         memset(digit_str + 4, 0, 8 - 4);
     }
-    else if(digit_str[0] == 's')
-    {
-        if(digit_str[1] == 'i')
-        {
-            memset(digit_str + 3, 0, 8 - 3);
-        }
-        else if(digit_str[1] == 'e')
-        {
-            memset(digit_str + 5, 0, 8 - 5);
-        }
-    }
-    else if(digit_str[0] == 'e')
+    else if(digit_str[0] == 'e' || (digit_str[0] == 's' && digit_str[1] == 'e') || (digit_str[0] == 't' && digit_str[1] == 'h'))
     {
         memset(digit_str + 5, 0, 8 - 5);
-    }
-    else if(digit_str[0] == 'n')
-    {
-        memset(digit_str + 4, 0, 8 - 4);
     }
     
     long as_long = *(long*)&digit_str;
