@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdint.h>
 #define STB_DS_IMPLEMENTATION
 #include "stb_ds.h"
 
@@ -86,7 +87,7 @@ int main(int argc, char *argv[])
     arrfree(lines);
 }
 
-// since no digit name has more than 8 chars, it can be fully represented by a long
+// since no digit name has more than 8 chars, it can be fully represented by a uint64_t
 int digit_name_to_int(const char *str, int n)
 {
     char digit_str[8] = { 0 };
@@ -106,19 +107,19 @@ int digit_name_to_int(const char *str, int n)
         memset(digit_str + 5, 0, 8 - 5);
     }
     
-    long as_long = *(long*)&digit_str;
+    uint64_t as_uint64_t = *(uint64_t*)&digit_str;
     
-    constexpr long one   = 6647407;
-    constexpr long two   = 7305076;
-    constexpr long three = 435493693556;
-    constexpr long four  = 1920298854;
-    constexpr long five  = 1702259046;
-    constexpr long six   = 7891315;
-    constexpr long seven = 474148660595;
-    constexpr long eight = 499967813989;
-    constexpr long nine  = 1701734766;
+    constexpr uint64_t one   = 6647407;
+    constexpr uint64_t two   = 7305076;
+    constexpr uint64_t three = 435493693556;
+    constexpr uint64_t four  = 1920298854;
+    constexpr uint64_t five  = 1702259046;
+    constexpr uint64_t six   = 7891315;
+    constexpr uint64_t seven = 474148660595;
+    constexpr uint64_t eight = 499967813989;
+    constexpr uint64_t nine  = 1701734766;
     
-    switch(as_long)
+    switch(as_uint64_t)
     {
         case one:   return 1;
         case two:   return 2;
