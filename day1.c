@@ -58,6 +58,8 @@ int main(int argc, char *argv[])
     }
     
     printf("%d\n", sum);
+    
+    fclose(file);
 }
 
 // since no digit name has more than 8 chars, it can be fully represented by a uint64_t
