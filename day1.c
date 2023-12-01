@@ -7,7 +7,7 @@
 
 #define min(a, b) (a < b ? a : b)
 
-char digit_name_to_char(const char *str, int n);
+int digit_name_to_char(const char *str, int n);
 
 int main(int argc, char *argv[])
 {
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     
     const long nb_lines = i;
     
-    char (*results)[3] = calloc(nb_lines, sizeof(char[3]));
+    int sum = 0;
     
     for(int i = 0 ; i < nb_lines ; i++)
     {
@@ -59,8 +59,8 @@ int main(int argc, char *argv[])
                 int left_digit_name_as_char;
                 
                 if(isdigit(lines[i][j]))
-                    f = lines[i][j];
-                else if((left_digit_name_as_char = digit_name_to_char(lines[i] + j, linelen - j)) != 0)
+                    f = lines[i][j] - '0';
+                else if((left_digit_name_as_char = digit_name_to_char(lines[i] + j, linelen - j)) != -1)
                     f = left_digit_name_as_char;
             }
             if(!l)
@@ -68,20 +68,13 @@ int main(int argc, char *argv[])
                 int right_digit_name_as_char;
                 
                 if(isdigit(lines[i][k]))
-                    l = lines[i][k];
-                else if((right_digit_name_as_char = digit_name_to_char(lines[i] + k, linelen - k)) != 0)
+                    l = lines[i][k] - '0';
+                else if((right_digit_name_as_char = digit_name_to_char(lines[i] + k, linelen - k)) != -1)
                     l = right_digit_name_as_char;
             }
         }
         
-        results[i][0] = f;
-        results[i][1] = l;
-    }
-    
-    int sum = 0;
-    for(int i = 0 ; i < nb_lines ; i++)
-    {
-        sum += atoi(results[i]);
+        sum += (f * 10) + l;
     }
     
     printf("%d\n", sum);
@@ -92,11 +85,10 @@ int main(int argc, char *argv[])
     }
     
     arrfree(lines);
-    free(results);
 }
 
 // since no digit name has more than 8 chars, it can be fully represented by a long
-char digit_name_to_char(const char *str, int n)
+int digit_name_to_char(const char *str, int n)
 {
     char digit_str[8] = { 0 };
     memcpy(digit_str, str, min(n, 8));
@@ -155,16 +147,16 @@ char digit_name_to_char(const char *str, int n)
     
     switch(as_long)
     {
-        case one:   return '1';
-        case two:   return '2';
-        case three: return '3';
-        case four:  return '4';
-        case five:  return '5';
-        case six:   return '6';
-        case seven: return '7';
-        case eight: return '8';
-        case nine:  return '9';
+        case one:   return 1;
+        case two:   return 2;
+        case three: return 3;
+        case four:  return 4;
+        case five:  return 5;
+        case six:   return 6;
+        case seven: return 7;
+        case eight: return 8;
+        case nine:  return 9;
     }
     
-    return 0;
+    return -1;
 }
