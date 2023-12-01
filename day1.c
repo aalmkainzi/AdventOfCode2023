@@ -56,20 +56,20 @@ int main(int argc, char *argv[])
         {
             if(!f)
             {
-                int left_digit_name_as_char = digit_name_to_char(lines[i] + j, linelen - j);
+                int left_digit_name_as_char;
                 
                 if(isdigit(lines[i][j]))
                     f = lines[i][j];
-                else if(left_digit_name_as_char != -1)
+                else if((left_digit_name_as_char = digit_name_to_char(lines[i] + j, linelen - j)) != -1)
                     f = left_digit_name_as_char;
             }
             if(!l)
             {
-                int right_digit_name_as_char = digit_name_to_char(lines[i] + k, linelen - k);
+                int right_digit_name_as_char;
                 
                 if(isdigit(lines[i][k]))
                     l = lines[i][k];
-                else if(right_digit_name_as_char != -1)
+                else if((right_digit_name_as_char = digit_name_to_char(lines[i] + k, linelen - k)) != -1)
                     l = right_digit_name_as_char;
             }
         }
