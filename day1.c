@@ -60,37 +60,37 @@ int main(int argc, char *argv[])
     fclose(file);
 }
 
-#define PATTERN_(A,B,C,D,E,...) ( \
+#define CHARS_TO_U64_(A,B,C,D,E,...) ( \
     ((uint64_t)(A)) |       \
     ((uint64_t)(B) << 8)  | \
     ((uint64_t)(C) << 16) | \
     ((uint64_t)(D) << 24) | \
     ((uint64_t)(E) << 32))
 
-#define PATTERN(...) PATTERN_(__VA_ARGS__,0,0)
+#define CHARS_TO_U64(...) CHARS_TO_U64_(__VA_ARGS__,0,0)
 
 char digit_name_to_num(const char *c) {
     uint64_t u64 = *(uint64_t*)c;
     
     switch(u64 & 0xFFFFFFFFFF)
     {
-        case PATTERN('t','h','r','e','e'): return 3;
-        case PATTERN('s','e','v','e','n'): return 7;
-        case PATTERN('e','i','g','h','t'): return 8;
+        case CHARS_TO_U64('t','h','r','e','e'): return 3;
+        case CHARS_TO_U64('s','e','v','e','n'): return 7;
+        case CHARS_TO_U64('e','i','g','h','t'): return 8;
     }
     
     switch(u64 & 0xFFFFFFFF)
     {
-        case PATTERN('f','o','u','r'): return 4;
-        case PATTERN('f','i','v','e'): return 5;
-        case PATTERN('n','i','n','e'): return 9;
+        case CHARS_TO_U64('f','o','u','r'): return 4;
+        case CHARS_TO_U64('f','i','v','e'): return 5;
+        case CHARS_TO_U64('n','i','n','e'): return 9;
     }
     
     switch(u64 & 0xFFFFFF)
     {
-        case PATTERN('o','n','e'): return 1;
-        case PATTERN('t','w','o'): return 2;
-        case PATTERN('s','i','x'): return 6;
+        case CHARS_TO_U64('o','n','e'): return 1;
+        case CHARS_TO_U64('t','w','o'): return 2;
+        case CHARS_TO_U64('s','i','x'): return 6;
     }
     
     return 0;
