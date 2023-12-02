@@ -27,8 +27,9 @@ int main(int argc, char *argv[])
     
     while(!feof(file))
     {
+        long prev_pos = ftell(file);
         fgets(line, sizeof(line), file);
-        long linelen = strlen(line);
+        long line_len = ftell(file) - prev_pos;
         
         char first_digit = 0, last_digit = 0;
         
@@ -42,7 +43,7 @@ int main(int argc, char *argv[])
                 first_digit = left_digit_name_as_num;
         }
         
-        for(int j = linelen - 1 ; last_digit == 0 ; j--)
+        for(int j = line_len - 1 ; last_digit == 0 ; j--)
         {
             char right_digit_name_as_num;
             
