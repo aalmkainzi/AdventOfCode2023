@@ -28,6 +28,7 @@ int main(int argc, char *argv[])
     {
         fgets(line, sizeof(line), file);
         long line_len = strlen(line);
+        
         char first_digit = 0, last_digit = 0;
         
         for(int j = 0 ; first_digit == 0 ; j++)
