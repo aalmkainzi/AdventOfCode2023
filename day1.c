@@ -24,13 +24,10 @@ int main(int argc, char *argv[])
     
     int sum = 0;
     char line[128] = { 0 };
-    
     while(!feof(file))
     {
-        long prev_pos = ftell(file);
         fgets(line, sizeof(line), file);
-        long line_len = ftell(file) - prev_pos;
-        
+        long line_len = strlen(line);
         char first_digit = 0, last_digit = 0;
         
         for(int j = 0 ; first_digit == 0 ; j++)
