@@ -70,7 +70,8 @@ int main(int argc, char *argv[])
 #define CHARS_TO_U64(...) CHARS_TO_U64_(__VA_ARGS__,0,0)
 
 char digit_name_to_num(const char *c) {
-    uint64_t u64 = *(uint64_t*)c;
+    uint64_t u64;
+    memcpy(&u64, c, sizeof(u64));
     
     switch(u64 & 0xFFFFFFFFFF)
     {
