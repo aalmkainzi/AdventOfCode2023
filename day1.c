@@ -30,29 +30,29 @@ int main(int argc, char *argv[])
         fgets(line, sizeof(line), file);
         long linelen = strlen(line);
         
-        char f = 0, l = 0;
+        char first_digit = 0, last_digit = 0;
         
-        for(int j = 0 ; f == 0 ; j++)
+        for(int j = 0 ; first_digit == 0 ; j++)
         {
             char left_digit_name_as_num;
             
             if(isdigit(line[j]))
-                f = line[j] - '0';
+                first_digit = line[j] - '0';
             else if((left_digit_name_as_num = digit_name_to_num(line + j)) != 0)
-                f = left_digit_name_as_num;
+                first_digit = left_digit_name_as_num;
         }
         
-        for(int j = linelen - 1 ; l == 0 ; j--)
+        for(int j = linelen - 1 ; last_digit == 0 ; j--)
         {
             char right_digit_name_as_num;
             
             if(isdigit(line[j]))
-                l = line[j] - '0';
+                last_digit = line[j] - '0';
             else if((right_digit_name_as_num = digit_name_to_num(line + j)) != 0)
-                l = right_digit_name_as_num;
+                last_digit = right_digit_name_as_num;
         }
         
-        sum += (f * 10) + l;
+        sum += (first_digit * 10) + last_digit;
     }
     
     printf("%d\n", sum);
