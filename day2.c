@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
         exit(1);
     }
     
-    part2(file);
+    part1(file);
 }
 
 void part1(FILE *file)
