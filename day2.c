@@ -65,8 +65,6 @@ void part1(FILE *file)
     printf("%u\n", sum);
 }
 
-const int color_lens_table[26] = {['b' - 'a'] = 4, ['g' - 'a'] = 5, ['r' - 'a'] = 3};
-
 void part2(FILE *file)
 {
     char line[256] = { 0 };
@@ -94,7 +92,9 @@ void part2(FILE *file)
             unsigned int num;
             char color;
             int after_letter;
-            sscanf(lineptr, "%u %c%n", &num, &color, &after_letter);
+            sscanf(lineptr, "%u%n", &num, &after_letter);
+            lineptr += after_letter + 1;
+            color = lineptr[0];
             
             if(color == 'r' && num > max_red)
                 max_red = num;
@@ -103,8 +103,12 @@ void part2(FILE *file)
             if(color == 'b' && num > max_blue)
                 max_blue = num;
             
-            lineptr += after_letter;
-            lineptr += color_lens_table[color - 'a'] - 1 + 2;
+            switch(color)
+            {
+                case 'r': lineptr += 3 - 1 + 2; break;
+                case 'g': lineptr += 5 - 1 + 2; break;
+                case 'b': lineptr += 4 - 1 + 2; break;
+            }
         }
         
         unsigned int power = (max_red * max_green * max_blue);
