@@ -90,28 +90,36 @@ void part2(FILE *file)
         while(lineptr < limit)
         {
             unsigned int num;
-            int after_letter;
-            sscanf(lineptr, "%u%n", &num, &after_letter);
-            lineptr += after_letter + 1;
+            int after_num;
+            sscanf(lineptr, "%u%n", &num, &after_num);
+            lineptr += after_num + 1;
             char color = lineptr[0];
             
-            if(color == 'r' && num > max_red)
-                max_red = num;
-            if(color == 'g' && num > max_green)
-                max_green = num;
-            if(color == 'b' && num > max_blue)
-                max_blue = num;
-            
-            switch(color)
+            if(color == 'r')
             {
-                case 'r': lineptr += 3 - 1 + 2; break;
-                case 'g': lineptr += 5 - 1 + 2; break;
-                case 'b': lineptr += 4 - 1 + 2; break;
+                lineptr += 2;
+                if(num > max_red)
+                    max_red = num;
             }
+            else if(color == 'g')
+            {
+                lineptr += 4;
+                if(num > max_green)
+                    max_green = num;
+            } 
+            else if(color == 'b')
+            {
+                lineptr += 3;
+                if(num > max_blue)
+                    max_blue = num;
+            }
+            
+            lineptr += 2;
         }
         
         unsigned int power = (max_red * max_green * max_blue);
         sum += power;
+        
         game_number++;
         if(game_number == next_level)
         {
