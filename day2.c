@@ -40,11 +40,11 @@ void part1(FILE *file)
         
         char color[6] = { 0 };
         unsigned int num;
-        int read_something = 3;
+        int read_something = 1;
         char last_read[2] = { 0 };
-        while(read_something == 3)
+        while(read_something > 0 && last_read[0] != '\n')
         {
-            read_something = fscanf(file, "%u %[a-z]%[,;]", &num, color, last_read);
+            read_something = fscanf(file, "%u %[a-z]%[,;\n]", &num, color, last_read);
             if(
                 (color[0] == 'r' && num > RED_MAX)   ||
                 (color[0] == 'g' && num > GREEN_MAX) ||
@@ -54,10 +54,11 @@ void part1(FILE *file)
             }
         }
         
-        fscanf(file, "%*[^\n]\n");
-        sum += game_counter;
+        sum += game_counter++;
+        continue;
         
         impossible:
+        if(last_read[0] != '\n') fscanf(file, "%*[^\n]\n");
         game_counter++;
     }
     
