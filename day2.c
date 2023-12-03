@@ -24,14 +24,14 @@ int main(int argc, char *argv[])
     part2(file);
 }
 
-enum {
-    RED_MAX = 12,
-    GREEN_MAX = 13,
-    BLUE_MAX = 14
-};
-
 void part1(FILE *file)
 {
+    enum {
+        RED_MAX = 12,
+        GREEN_MAX = 13,
+        BLUE_MAX = 14
+    };
+    
     unsigned int game_counter = 1;
     unsigned int sum = 0;
     while(!feof(file))
