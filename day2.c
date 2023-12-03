@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
         exit(1);
     }
     
-    part2(file);
+    part1(file);
 }
 
 void part1(FILE *file)
@@ -41,10 +41,10 @@ void part1(FILE *file)
         char color[6] = { 0 };
         unsigned int num;
         int nb_reads = 3;
-        char dummy[2];
+        char seperator[2];
         while(nb_reads == 3)
         {
-            nb_reads = fscanf(file, "%u %[a-z]%[,;]", &num, color, dummy);
+            nb_reads = fscanf(file, "%u %[a-z]%[,;]", &num, color, seperator);
             if(
                 (color[0] == 'r' && num > RED_MAX)   ||
                 (color[0] == 'g' && num > GREEN_MAX) ||
