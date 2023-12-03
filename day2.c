@@ -1,14 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
-#include <stdint.h>
 
-enum {
-    RED_MAX = 12,
-    GREEN_MAX = 13,
-    BLUE_MAX = 14
-};
+void part1(FILE *file);
+void part2(FILE *file);
 
 int main(int argc, char *argv[])
 {
@@ -26,6 +21,17 @@ int main(int argc, char *argv[])
         exit(1);
     }
     
+    part2(file);
+}
+
+enum {
+    RED_MAX = 12,
+    GREEN_MAX = 13,
+    BLUE_MAX = 14
+};
+
+void part1(FILE *file)
+{
     unsigned int game_counter = 1;
     unsigned int sum = 0;
     while(!feof(file))
@@ -59,5 +65,36 @@ int main(int argc, char *argv[])
     printf("%u\n", sum);
 }
 
-
+void part2(FILE *file)
+{
+    unsigned int sum = 0;
+    while(!feof(file))
+    {
+        fscanf(file, "Game %*u:");
+        
+        char color[6] = { 0 };
+        unsigned int num;
+        int read_something = 1;
+        char last_read[2] = { 0 };
+        
+        unsigned int max_red = 0;
+        unsigned int max_green = 0;
+        unsigned int max_blue = 0;
+        
+        while(read_something > 0 && last_read[0] != '\n')
+        {
+            read_something = fscanf(file, "%u %[a-z]%[,;\n]", &num, color, last_read);
+            if(color[0] == 'r' && num > max_red) 
+                max_red = num;
+            if(color[0] == 'g' && num > max_green) 
+                max_green = num;
+            if(color[0] == 'b' && num > max_blue) 
+                max_blue = num;
+        }
+        
+        sum += (max_red * max_green * max_blue);
+    }
+    
+    printf("%u\n", sum);
+}
 
