@@ -26,8 +26,8 @@ int main(int argc, char *argv[])
     char line[128] = { 0 };
     while(!feof(file))
     {
-        fgets(line, sizeof(line), file);
-        long line_len = strlen(line);
+        int line_len;
+        fscanf(file, "%127[^\n]%n\n", line, &line_len);
         
         char first_digit = 0, last_digit = 0;
         
