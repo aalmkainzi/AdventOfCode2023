@@ -40,12 +40,11 @@ void part1(FILE *file)
         
         char color[6] = { 0 };
         unsigned int num;
-        int read_something = 3;
-        char last_read[2] = { 0 };
-        
-        while(read_something == 3)
+        int nb_reads = 3;
+        char dummy[2];
+        while(nb_reads == 3)
         {
-            read_something = fscanf(file, "%u %[a-z]%[,;]", &num, color, last_read);
+            nb_reads = fscanf(file, "%u %[a-z]%[,;]", &num, color, dummy);
             if(
                 (color[0] == 'r' && num > RED_MAX)   ||
                 (color[0] == 'g' && num > GREEN_MAX) ||
@@ -75,16 +74,14 @@ void part2(FILE *file)
         
         char color[6] = { 0 };
         unsigned int num;
-        int read_something = 1;
-        char last_read[2] = { 0 };
-        
+        int nb_reads = 2;
         unsigned int max_red = 0;
         unsigned int max_green = 0;
         unsigned int max_blue = 0;
         
-        while(read_something > 0 && last_read[0] != '\n')
+        while(nb_reads == 2)
         {
-            read_something = fscanf(file, "%u %[a-z]%[,;\n]", &num, color, last_read);
+            nb_reads = fscanf(file, "%u %[a-z]%*[,;]", &num, color);
             if(color[0] == 'r' && num > max_red)
                 max_red = num;
             if(color[0] == 'g' && num > max_green)
