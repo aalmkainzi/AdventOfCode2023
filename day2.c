@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
         exit(1);
     }
     
-    part1(file);
+    part2(file);
 }
 
 void part1(FILE *file)
@@ -66,6 +66,8 @@ void part1(FILE *file)
     printf("%u\n", sum);
 }
 
+#define max(a, b) (a > b ? a : b)
+
 void part2(FILE *file)
 {
     unsigned int sum = 0;
@@ -85,11 +87,11 @@ void part2(FILE *file)
         while(read_something > 0 && last_read[0] != '\n')
         {
             read_something = fscanf(file, "%u %[a-z]%[,;\n]", &num, color, last_read);
-            if(color[0] == 'r' && num > max_red) 
+            if(color[0] == 'r' && num > max_red)
                 max_red = num;
-            if(color[0] == 'g' && num > max_green) 
+            if(color[0] == 'g' && num > max_green)
                 max_green = num;
-            if(color[0] == 'b' && num > max_blue) 
+            if(color[0] == 'b' && num > max_blue)
                 max_blue = num;
         }
         
