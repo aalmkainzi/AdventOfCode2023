@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
         exit(1);
     }
     
-    part2(file);
+    part1(file);
 }
 
 void part1(FILE *file)
@@ -40,11 +40,12 @@ void part1(FILE *file)
         
         char color[6] = { 0 };
         unsigned int num;
-        int read_something = 1;
+        int read_something = 3;
         char last_read[2] = { 0 };
-        while(read_something > 0 && last_read[0] != '\n')
+        
+        while(read_something == 3)
         {
-            read_something = fscanf(file, "%u %[a-z]%[,;\n]", &num, color, last_read);
+            read_something = fscanf(file, "%u %[a-z]%[,;]", &num, color, last_read);
             if(
                 (color[0] == 'r' && num > RED_MAX)   ||
                 (color[0] == 'g' && num > GREEN_MAX) ||
@@ -54,11 +55,11 @@ void part1(FILE *file)
             }
         }
         
-        sum += game_counter++;
-        continue;
+        sum += game_counter;
         
         impossible:
-        if(last_read[0] != '\n') fscanf(file, "%*[^\n]\n");
+        fscanf(file, "%*[^\n]");
+        fgetc(file);
         game_counter++;
     }
     
