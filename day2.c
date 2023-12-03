@@ -75,7 +75,8 @@ void part2(FILE *file)
     int game_number = 1;
     while(!feof(file))
     {
-        fgets(line, sizeof(line), file);
+        int line_len;
+        fscanf(file, "%255[^\n]%n\n", line, &line_len);
         lineptr = line;
         lineptr += sizeof("Game ") - 1;
         lineptr += game_num_str_length;
@@ -85,16 +86,14 @@ void part2(FILE *file)
         unsigned int max_green = 0;
         unsigned int max_blue = 0;
         
-        size_t line_len = strlen(lineptr);
-        const char *limit = lineptr + line_len;
+        const char *limit = line + line_len;
         while(lineptr < limit)
         {
             unsigned int num;
-            char color;
             int after_letter;
             sscanf(lineptr, "%u%n", &num, &after_letter);
             lineptr += after_letter + 1;
-            color = lineptr[0];
+            char color = lineptr[0];
             
             if(color == 'r' && num > max_red)
                 max_red = num;
