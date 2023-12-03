@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
         exit(1);
     }
     
-    part1(file);
+    part2(file);
 }
 
 void part1(FILE *file)
@@ -65,32 +65,56 @@ void part1(FILE *file)
     printf("%u\n", sum);
 }
 
+const int color_lens_table[26] = {['b' - 'a'] = 4, ['g' - 'a'] = 5, ['r' - 'a'] = 3};
+
 void part2(FILE *file)
 {
+    char line[256] = { 0 };
+    char *lineptr = line;
     unsigned int sum = 0;
+    int game_num_str_length = 1;
+    int next_level = 10;
+    int game_number = 1;
     while(!feof(file))
     {
-        fscanf(file, "Game %*u:");
+        fgets(line, sizeof(line), file);
+        lineptr = line;
+        lineptr += sizeof("Game ") - 1;
+        lineptr += game_num_str_length;
+        lineptr += 2;
         
-        char color[6] = { 0 };
-        unsigned int num;
-        int nb_reads = 2;
         unsigned int max_red = 0;
         unsigned int max_green = 0;
         unsigned int max_blue = 0;
         
-        while(nb_reads == 2)
+        size_t line_len = strlen(lineptr);
+        const char *limit = lineptr + line_len;
+        while(lineptr < limit)
         {
-            nb_reads = fscanf(file, "%u %[a-z]%*[,;]", &num, color);
-            if(color[0] == 'r' && num > max_red)
+            unsigned int num;
+            char color;
+            int after_letter;
+            sscanf(lineptr, "%u %c%n", &num, &color, &after_letter);
+            
+            if(color == 'r' && num > max_red)
                 max_red = num;
-            if(color[0] == 'g' && num > max_green)
+            if(color == 'g' && num > max_green)
                 max_green = num;
-            if(color[0] == 'b' && num > max_blue)
+            if(color == 'b' && num > max_blue)
                 max_blue = num;
+            
+            lineptr += after_letter;
+            lineptr += color_lens_table[color - 'a'] - 1 + 2;
         }
         
-        sum += (max_red * max_green * max_blue);
+        unsigned int power = (max_red * max_green * max_blue);
+        sum += power;
+        game_number++;
+        if(game_number == next_level)
+        {
+            game_num_str_length++;
+            next_level *= 10;
+        }
     }
     
     printf("%u\n", sum);
