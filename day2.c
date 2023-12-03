@@ -66,8 +66,6 @@ void part1(FILE *file)
     printf("%u\n", sum);
 }
 
-#define max(a, b) (a > b ? a : b)
-
 void part2(FILE *file)
 {
     unsigned int sum = 0;
