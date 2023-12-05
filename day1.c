@@ -23,11 +23,11 @@ int main(int argc, char *argv[])
     }
     
     int sum = 0;
-    char line[128] = { 0 };
+    char *line = NULL;
+    size_t allocated = 0;
     while(!feof(file))
     {
-        int line_len;
-        fscanf(file, "%127[^\n]%n\n", line, &line_len);
+        size_t line_len = getline(&line, &allocated, file);
         
         char first_digit = 0, last_digit = 0;
         
@@ -56,6 +56,7 @@ int main(int argc, char *argv[])
     
     printf("%d\n", sum);
     
+    free(line);
     fclose(file);
 }
 
